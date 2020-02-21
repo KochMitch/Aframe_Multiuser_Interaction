@@ -108,3 +108,5 @@ dist
 *.sln
 *.user
 *.njsproj
+bin/
+obj/
