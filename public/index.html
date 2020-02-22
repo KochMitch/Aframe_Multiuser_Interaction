@@ -8,13 +8,15 @@
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.js"></script>
     <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.js"></script>
     <script>
         _select = (sel) => document.querySelector(sel)
         _selectAll = (sel) => document.querySelectorAll(sel)
         on = (elem, type, hand) => elem.addEventListener(type, hand)
 
         // Prevent context menu.
-        document.addEventListener("contextmenu", function (e) 
+        document.addEventListener("contextmenu", function (e)
         {
             e.preventDefault();
             console.log("Context menu disabled for right click.")
@@ -22,14 +24,47 @@
     </script>
 </head>
 <body>
-    <a-scene physics="debug: true;">
-
-        <a-entity id='ball'
-                  position="0 1 -4"
-                  material="color:green;"
-                  geometry="primitive:sphere; radius: 0.5;"
-                  dynamic-body>
-        </a-entity>
+    <a-scene physics="debug: true;"
+             networked-scene="app: competative; room: field; debug: true;">
+        <a-assets>
+            <template id="my-template">
+                <a-entity id='ball'
+                          position="0 1 -4"
+                          material="color:green;"
+                          geometry="primitive:sphere; radius: 0.5;"
+                          dynamic-body>
+                </a-entity>
+            </template>
+            <template id="avatar-template">
+                <a-entity class="avatar">
+                    <a-sphere class="head"
+                              color="#5985ff"
+                              scale="0.45 0.5 0.4"></a-sphere>
+                    <a-entity class="face"
+                              position="0 0.05 0">
+                        <a-sphere class="eye"
+                                  color="#efefef"
+                                  position="0.16 0.1 -0.35"
+                                  scale="0.12 0.12 0.12">
+                            <a-sphere class="pupil"
+                                      color="#000"
+                                      position="0 0 -1"
+                                      scale="0.2 0.2 0.2"></a-sphere>
+                        </a-sphere>
+                        <a-sphere class="eye"
+                                  color="#efefef"
+                                  position="-0.16 0.1 -0.35"
+                                  scale="0.12 0.12 0.12">
+                            <a-sphere class="pupil"
+                                      color="#000"
+                                      position="0 0 -1"
+                                      scale="0.2 0.2 0.2"></a-sphere>
+                        </a-sphere>
+                    </a-entity>
+                </a-entity>
+            </template>
+        </a-assets>
+        
 
         <a-plane color='red' rotation="-90 0 0"
                  static-body
@@ -37,20 +72,22 @@
         </a-plane>
 
         <!-- Camera -->
-        <a-entity camera
-                  position="0 1.5 0"
+        <a-entity id="player"
+                  networked="template:#avatar-template;attachTemplateToLocal:false;"
+                  camera
+                  position="0 1.5 0"                 
                   look-controls="pointerLockEnabled:true"
                   capture-mouse
                   wasd-controls="acceleration: 100">
-            <a-cursor></a-cursor>
-            <a-entity  id="staff" position="0 0 -3">
-                <a-box color='blue' 
-                       width='0.25' 
-                       height='0.5' 
+            <!--<a-cursor></a-cursor>
+            <a-entity id="staff" position="0 0 -3">
+                <a-box color='blue'
+                       width='0.25'
+                       height='0.5'
                        depth='3'
                        static-body>
                 </a-box>
-            </a-entity>
+            </a-entity>-->
         </a-entity>
     </a-scene>
 
