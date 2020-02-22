@@ -25,11 +25,10 @@
 </head>
 <body>
     <a-scene physics="debug: true;"
-             networked-scene="app: competative; room: field; debug: true;">
+             networked-scene="app: competitive; room: field; debug: true;">
         <a-assets>
-            <template id="my-template">
-                <a-entity id='ball'
-                          position="0 1 -4"
+            <template id="ball-template">
+                <a-entity position="0 1 -4"
                           material="color:green;"
                           geometry="primitive:sphere; radius: 0.5;"
                           dynamic-body>
@@ -64,7 +63,13 @@
                 </a-entity>
             </template>
         </a-assets>
-        
+        <a-entity id="ball" networked="template: #ball-template"
+                  position="0 1 -4"
+                  material="color:green;"
+                  geometry="primitive:sphere; radius: 0.5;"
+                  dynamic-body>
+
+        </a-entity>
 
         <a-plane color='red' rotation="-90 0 0"
                  static-body
@@ -73,21 +78,21 @@
 
         <!-- Camera -->
         <a-entity id="player"
-                  networked="template:#avatar-template;attachTemplateToLocal:false;"
+                  networked="template: #avatar-template; attachTemplateToLocal: false;"
                   camera
                   position="0 1.5 0"                 
                   look-controls="pointerLockEnabled:true"
                   capture-mouse
                   wasd-controls="acceleration: 100">
-            <!--<a-cursor></a-cursor>
-            <a-entity id="staff" position="0 0 -3">
+            <a-cursor></a-cursor>
+            <a-entity id="bat" position="0 0 -3">
                 <a-box color='blue'
                        width='0.25'
                        height='0.5'
                        depth='3'
                        static-body>
                 </a-box>
-            </a-entity>-->
+            </a-entity>
         </a-entity>
     </a-scene>
 
