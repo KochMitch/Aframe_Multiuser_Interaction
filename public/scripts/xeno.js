@@ -10,21 +10,10 @@ AFRAME.registerComponent('xeno',
         init : function()
         {
             const context = this;
-            //this.despawnTimer = setTimeout(function ()
-            //{
-            //    context.despawnSelf();
-            //}, ((Math.random() * 3) + 4) * 1000);
-
-            //context.el.addEventListener("collide", function (event)
-            //{
-            //    const targetEl = event.detail.body.el;
-            //    //let targetComp = targetEl.getAttribute('xeno');
-
-            //    if (targetEl.class == "weapon")
-            //    {
-            //        context.isHit = true;
-            //    }
-            //});
+            this.despawnTimer = setTimeout(function ()
+            {
+                context.despawnSelf();
+            }, (Math.random() * 4) + 5 * 1000);
 
             context.el.addEventListener("collide", function (event)
             {
@@ -45,25 +34,6 @@ AFRAME.registerComponent('xeno',
                     }, 1200);
                 }
             });
-
-            //this.collideHandle = function (event)
-            //{
-            //    const targetEl = event.detail.body.el;
-
-            //    if (targetEl.class == "weapon")
-            //    {
-            //        //context.isHit = true;
-            //        context.el.removeEventListener("collide", context.collideHandle);
-            //        if (context.despawnTimer)
-            //        {
-            //            clearTimeout(context.despawnTimer);
-            //        }
-
-            //        context.despawnTimer = setTimeout(context.despawnSelf, 1200);
-            //    }
-            //};
-
-            //context.el.addEventListener("collide", context.collideHandle);
         },
 
         remove: function ()

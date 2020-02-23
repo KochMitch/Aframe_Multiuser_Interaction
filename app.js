@@ -18,7 +18,8 @@ if (process.env.NODE_ENV === "development")
     const config = require("../webpack.dev");
 
     app.use(
-        webpackMiddleware(webpack(config), {
+        webpackMiddleware(webpack(config),
+        {
             publicPath: "/dist/"
         })
     );
@@ -28,7 +29,7 @@ const rooms = {};
 
 io.on("connection", socket =>
 {
-    console.log("user connected", socket.id);
+    console.log("User connected", socket.id);
 
     let curRoom = null;
 
@@ -83,6 +84,13 @@ io.on("connection", socket =>
                 delete rooms[curRoom];
             }
         }
+    });
+
+    // Game events
+    socket.on('xeno_killed', function (data)
+    {
+        //console.log('Xeno killed');
+        socketIO.sockets.emit('xeno_change', { r: 0, g: 255, b: 0 });
     });
 });
 
