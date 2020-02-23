@@ -12,10 +12,11 @@
     <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.js"></script>
     <script src="https://unpkg.com/aframe-state-component@6.7.0/dist/aframe-state-component.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
-    <!--<script src="game-state.js"></script>-->
+    <script src="scripts/weapon.js"></script>
+    <script src="scripts/xeno.js"></script>
     <script>
-        $ = (sel) => document.querySelector(sel)
-        selectAll = (sel) => document.querySelectorAll(sel)
+        _select = (sel) => document.querySelector(sel)
+        _selectAll = (sel) => document.querySelectorAll(sel)
         on = (elem, type, hand) => elem.addEventListener(type, hand)
 
         // Prevent context menu.
@@ -30,8 +31,17 @@
     <a-scene physics="debug: true;"
              networked-scene="app: competitive; room: field; debug: true;">
         <a-assets>
+            <a-asset-item id="xeno" src="assets/models/xeno.glb"></a-asset-item>
+
+            <a-mixin>
+
+            </a-mixin>
+
             <template id="ball-template">
-                <a-entity position="0 1 -4"> </a-entity>
+                <a-entity position="0 1 -6"
+                          material="color:green;"
+                          geometry="primitive:sphere; radius: 0.5;"
+                          dynamic-body> </a-entity>
             </template>
             <template id="avatar-template">
                 <a-entity class="avatar">
@@ -64,19 +74,14 @@
         </a-assets>
         <a-entity environment="preset: contact; seed: 50;"></a-entity>
 
-        <!--networked="template: #ball-template"-->
         <a-entity id='ball'
-                  position="0 1 -4"
-                  material="color:green;"
-                  geometry="primitive:sphere; radius: 0.5;"
-                  dynamic-body>
+                  xeno
+                  position="0 0.5 -4"
+                  scale="0.01 0.01 0.01"
+                  gltf-model="#xeno"
+                  dynamic-body="shape: box;" >
+            <!--<a-entity id='xeno-model'  position="0 -23 0"></a-entity>-->
         </a-entity>
-
-        <a-plane rotation="-90 0 0"
-                 static-body
-                 width="100" height="100"
-                 visible="false">
-        </a-plane>
 
         <!-- Camera -->
         <a-entity id="player"
@@ -88,46 +93,54 @@
                   wasd-controls="acceleration: 100">
             <a-cursor></a-cursor>
             <a-text id="score" value="Score" position="-0.2 -0.5 -1" color="red" width="5" anchor="left"></a-text>
-            <a-entity id="weapon" position="0 0 -3">
-                <a-box color='blue'
+            <a-entity position="0 0 -3">
+                <a-box class="weapon"
+                       color='blue'
                        width='0.25'
-                       height='0.5'
+                       height='0.25'
                        depth='3'
-                       static-body>
+                       static-body
+                       weapon>
                 </a-box>
             </a-entity>
         </a-entity>
+
+        <a-plane rotation="-90 0 0"
+                 static-body
+                 width="100" height="100"
+                 visible="false">
+        </a-plane>
     </a-scene>
 
     <!--<script src="scripts/hit-detect.js"></script>-->
     <script>
         let score = 0;
-        let hit = false
-        let resetId = 0
-        const resetBall = () =>
-        {
-            clearTimeout(resetId)
-            $("#ball").body.position.set(0, 0.6, -4)
-            $("#ball").body.velocity.set(0, 5, 0)
-            $("#ball").body.angularVelocity.set(0, 0, 0)
-            hit = false
-            resetId = setTimeout(resetBall, 6000)
-        }
+        let hit = false;
+        let resetId = 0;
+        //const resetBall = () =>
+        //{
+        //    clearTimeout(resetId)
+        //    _select("#ball").body.position.set(0, 0.6, -4)
+        //    _select("#ball").body.velocity.set(0, 5, 0)
+        //    _select("#ball").body.angularVelocity.set(0, 0, 0)
+        //    hit = false
+        //    resetId = setTimeout(resetBall, 6000)
+        //}
 
-        on($("#weapon"), 'collide', (e) =>
-        {
-            const ball = $("#ball")
-            if (e.detail.body.id === ball.body.id && !hit)
-            {
-                hit = true
-                score = score + 1
-                $("#score").setAttribute('text', 'value', 'Score ' + score)
-                clearTimeout(resetId)
-                resetId = setTimeout(resetBall, 2000)
-            }
-        })
+        //on(_select("#weapon"), 'collide', (e) =>
+        //{
+        //    const ball = _select("#ball");
+        //    if (e.detail.body.id === ball.body.id && !hit)
+        //    {
+        //        hit = true;
+        //        score = score + 1;
+        //        _select("#score").setAttribute('text', 'value', 'Score ' + score);
+        //        clearTimeout(resetId);
+        //        resetId = setTimeout(resetBall, 2000);
+        //    }
+        //})
 
-        setTimeout(resetBall, 3000)
+        //setTimeout(resetBall, 3000);
     </script>
 </body>
 </html>
