@@ -18,9 +18,8 @@
     <script src="scripts/spawn-area.js"></script>
     <script src="scripts/selector.js"></script>
     <script>
-        _select = (sel) => document.querySelector(sel)
-        _selectAll = (sel) => document.querySelectorAll(sel)
-        on = (elem, type, hand) => elem.addEventListener(type, hand)
+        _select = (sel) => document.querySelector(sel);
+        on = (elem, type, hand) => elem.addEventListener(type, hand);
 
         // Prevent context menu.
         document.addEventListener("contextmenu", function (e)
@@ -31,7 +30,7 @@
     </script>
 </head>
 <body>
-    <a-scene physics="debug: true;"
+    <a-scene physics="debug: false;"
              networked-scene="app: Xeno_Basher; room: field; debug: false;">
         <a-assets>
             <!--https://freesound.org/people/Reitanna/sounds/323725/-->
@@ -156,25 +155,5 @@
             </a-box>
         </a-entity>
     </a-scene>
-    <!--<script>
-        NAF.schemas.add(
-        {
-            template: '#avatar-template',
-            components: [
-                'position',
-                'rotation',
-                'player',
-                {
-                    selector: '.hairs',
-                    component: 'show-child'
-                },
-                {
-                    selector: '.head',
-                    component: 'material',
-                    property: 'color'
-                },
-            ]
-        });
-    </script>-->
 </body>
 </html>
