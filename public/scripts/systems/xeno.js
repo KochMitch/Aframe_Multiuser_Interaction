@@ -1,8 +1,10 @@
 'use strict';
-GAME.xenos = {};
+//GAME.xenos = {};
 
 AFRAME.registerSystem('xeno', {
-    schema: { },
+    schema: {
+        maxXenos: {default: 5 },
+    },
 
     init: function ()
     {
@@ -16,6 +18,18 @@ AFRAME.registerSystem('xeno', {
         }
 
         this.xenos = [];
+        this.isSpawning = true;
+
+        //this.loop = function ()
+        //{
+        //    self.createXeno();
+
+        //};
+
+        setTimeout(function()
+        {
+            self.createXeno();
+        }, 1000);
 
         sceneEl.addEventListener('gamestate-changed', function (evt)
         {
@@ -25,7 +39,7 @@ AFRAME.registerSystem('xeno', {
                 {
                     setTimeout(function ()
                     {
-                        self.createXeno(0);
+                        self.createXeno();
                     }, 1000);
                 }
                 else if (evt.detail.state.state === 'STATE_GAME_OVER'
@@ -36,62 +50,59 @@ AFRAME.registerSystem('xeno', {
                     return;
                 }
             }
-
-            if ('waveSequence' in evt.detail.diff)
-            {
-                self.createSequence(evt.detail.state.waveSequence);
-            }
-
-            if ('wave' in evt.detail.diff)
-            {
-                self.createWave(evt.detail.state.wave);
-            }
         });
     },
 
-    onEnemyDeath: function (name, entity)
+    play: function ()
     {
-        if (this.sceneEl.getAttribute('gamestate').state === 'STATE_MENU')
+        this.isSpawning = true;
+    },
+
+    pause: function ()
+    {
+        this.isSpawning = false;
+    },
+
+    tick: function ()
+    {
+        let self = this;
+        if (self.isSpawning)
         {
-            this.sceneEl.emit('start-game');
-        } else
-        {
-            this.poolHelper.returnEntity(name, entity);
-            this.sceneEl.emit('enemy-death');
+            if (self.xenos.length < self.data.maxXenos)
+            {
+                self.createXeno();
+            }
         }
     },
 
-    createXeno: function (e)
+    despawnXeno: function (xeno)
+    {
+        let self = this;
+        let index = this.xenos.indexOf(xeno);
+        if (index > -1)
+        {
+            self.xenos.splice(index, 1);
+            this.sceneEl.emit('xeno-despawn');
+        }
+    },
+
+    createXeno: function ()
     {
         const self = this;
         let entity = document.createElement('a-entity');
-        entity.setAttribute('mixin', 'xeno');
+        entity.setAttribute('class', 'xeno');
+        entity.setAttribute('networked', { template: "#xeno-template" });
+        entity.setAttribute('spawn-area', { radius: 12, innerRadius: 2, inCircle: true });
 
-        function activateEnemy(entity)
-        {
-            //entity.setAttribute('visible', true);
-            GAME.xenos.push(entity);
-            self.sceneEl.emit('xeno-spawn', { enemy: entity });
-        }
+        self.xenos.push(entity);
+        self.sceneEl.emit('xeno-spawn', { xeno: entity });
 
-        if (timeOffset)
+        setTimeout(function ()
         {
-            if (timeOffset < 0)
-            {
-                entity.setAttribute('visible', false);
-                setTimeout(function ()
-                {
-                    activateEnemy(entity);
-                }, -timeOffset);
-            }
-            else
-            {
-
-            }
-        }
-        else
-        {
-            activateEnemy(entity);
-        }
+            entity.setAttribute('xeno', '');
+            self.sceneEl.appendChild(entity);
+        }, 1000);
     },
+
+
 });

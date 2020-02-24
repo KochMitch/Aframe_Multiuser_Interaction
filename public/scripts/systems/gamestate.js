@@ -21,12 +21,17 @@ AFRAME.registerSystem('gamestate', {
     init: function ()
     {
         var initialState = this.initialState;
-        var sceneEl = this.el;
+        const sceneEl = this.el;
         var state = this.data;
 
-        if (!initialState) { initialState = state; }
+        if (!initialState)
+        {
+            initialState = state;
+        }
 
         sceneEl.emit('gamestateinitialized', { state: initialState });
+
+        sceneEl.emit('start-game', {});
 
         registerHandler('start-game', function (newState)
         {
@@ -64,6 +69,12 @@ AFRAME.registerSystem('gamestate', {
             return initialState;
         });
 
+        registerHandler('xeno-spawn', function (newState)
+        {
+            newState.numEnemies++;
+            return newState;
+        });
+
         registerHandler('xeno-death', function (newState)
         {
             newState.score++;
@@ -73,7 +84,6 @@ AFRAME.registerSystem('gamestate', {
                 self.gameEnd(newState, true);
             }
 
-            newState.numEnemies--;
             // All enemies killed, advance wave.
             if (newState.numEnemies === 0)
             {
@@ -110,7 +120,7 @@ AFRAME.registerSystem('gamestate', {
         {
             el.addEventListener(eventName, function (param)
             {
-                var newState = handler(AFRAME.utils.extend({}, state), param);
+                let newState = handler(AFRAME.utils.extend({}, state), param);
                 publishState(eventName, newState);
             });
         }
@@ -118,10 +128,10 @@ AFRAME.registerSystem('gamestate', {
         // Part of the game state library.
         function publishState(event, newState)
         {
-            var oldState = AFRAME.utils.extend({}, state);
+            let oldState = AFRAME.utils.extend({}, state);
             el.setAttribute('gamestate', newState);
             state = newState;
-            el.emit('gamestatechanged', {
+            el.emit('gamestate-changed', {
                 event: event,
                 diff: AFRAME.utils.diff(oldState, newState),
                 state: newState
