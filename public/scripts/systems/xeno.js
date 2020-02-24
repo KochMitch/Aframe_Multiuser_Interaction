@@ -87,7 +87,6 @@ AFRAME.registerSystem('xeno', {
         entity.setAttribute('class', 'xeno');
         entity.setAttribute('networked', { template: "#xeno-template" });
         entity.setAttribute('spawn-area', { radius: 12, innerRadius: 2, inCircle: true });
-        //entity.setAttribute('sound', { src: '#squeak' });
 
         self.xenos.push(entity);
         self.sceneEl.emit('xeno-spawn', { xeno: entity });

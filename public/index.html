@@ -25,7 +25,7 @@
         document.addEventListener("contextmenu", function (e)
         {
             e.preventDefault();
-            console.log("Context menu disabled for right click.")
+            console.log("Context menu disabled for right click.");
         }, false);
     </script>
 </head>
@@ -82,7 +82,7 @@
                         </a-sphere>
                     </a-entity>
                     <a-entity position="0 0 -3">
-                        <a-box id="weapon"
+                        <a-box class="weapon"
                                color='blue'
                                width='0.25'
                                height='0.25'
@@ -108,7 +108,7 @@
             <a-cursor></a-cursor>
             <a-text id="score" value="Score: " position="-0.2 -0.5 -1" color="red" width="5" anchor="left"></a-text>
             <a-entity position="0 0 -3">
-                <a-box class="weapon"
+                <a-box id="playerWeap"
                        color='blue'
                        width='0.25'
                        height='0.25'
@@ -126,7 +126,7 @@
         </a-plane>
 
         <a-entity id="mainmenu">
-            <a-entity id="logo" json-model="src:url(assets/models/logo.json)" animate-message=""></a-entity>
+            <a-button id="logo" json-model="src:url(assets/models/logo.json)" animate-message=""></a-button>
             <a-entity id="start_enemy"
                       enemy="name: enemy_start; canShoot: false"
                       collision-helper="radius: 0.65"
@@ -141,14 +141,13 @@
     <script>
         // Define custom schema for syncing xeno position.
         //NAF.schemas.add({
-        //    template: '#xeno-template',
+        //    template: '#avatar-template',
         //    components: [
         //        'position',
         //        'rotation',
         //        {
-        //            selector: '.head',
-        //            component: 'material',
-        //            property: 'body'
+        //            selector: '.avatar',
+        //            property: 'player'
         //        }
         //    ]
         //});
@@ -167,35 +166,6 @@
         //    var particles = document.getElementById('particles');
         //    particles.parentNode.removeChild(particles);
         //}
-    </script>
-    <script>
-        let score = 0;
-        let hit = false;
-        let resetId = 0;
-            //const resetBall = () =>
-            //{
-            //    clearTimeout(resetId)
-            //    _select("#ball").body.position.set(0, 0.6, -4)
-            //    _select("#ball").body.velocity.set(0, 5, 0)
-            //    _select("#ball").body.angularVelocity.set(0, 0, 0)
-            //    hit = false
-            //    resetId = setTimeout(resetBall, 6000)
-            //}
-
-            //on(_select("#weapon"), 'collide', (e) =>
-            //{
-            //    const ball = _select("#ball");
-            //    if (e.detail.body.id === ball.body.id && !hit)
-            //    {
-            //        hit = true;
-            //        score = score + 1;
-            //        _select("#score").setAttribute('text', 'value', 'Score ' + score);
-            //        clearTimeout(resetId);
-            //        resetId = setTimeout(resetBall, 2000);
-            //    }
-            //})
-
-            //setTimeout(resetBall, 3000);
     </script>
 </body>
 </html>

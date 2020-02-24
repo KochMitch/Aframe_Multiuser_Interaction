@@ -19,7 +19,7 @@ AFRAME.registerComponent('xeno',
             {
                 const targetEl = event.detail.body.el;
 
-                if (targetEl.className == "weapon")
+                if (targetEl.id == "playerWeap")
                 {
                     //self.isHit = true;
                     self.el.removeEventListener("collide", collsionHandler);

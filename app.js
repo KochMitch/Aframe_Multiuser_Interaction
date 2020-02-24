@@ -98,6 +98,12 @@ io.on("connection", socket =>
         //console.log('Xeno killed');
         socketIO.sockets.emit('xeno_change', { r: 0, g: 255, b: 0 });
     });
+
+    socket.on('game_start', function (data)
+    {
+        //console.log('Xeno killed');
+        socketIO.sockets.emit('xeno_change', { r: 0, g: 255, b: 0 });
+    });
 });
 
 server.listen(LISTEN_PORT, () =>
