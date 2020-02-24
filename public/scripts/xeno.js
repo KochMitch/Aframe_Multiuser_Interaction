@@ -32,6 +32,8 @@ AFRAME.registerComponent('xeno',
                     {
                         self.despawnSelf();
                     }, 1200);
+
+                    self.el.sceneEl.emit();
                 }
             };
 

@@ -31,8 +31,6 @@ AFRAME.registerSystem('gamestate', {
 
         sceneEl.emit('gamestateinitialized', { state: initialState });
 
-        sceneEl.emit('start-game', {});
-
         registerHandler('start-game', function (newState)
         {
             newState.isGameOver = false;
@@ -58,13 +56,6 @@ AFRAME.registerSystem('gamestate', {
 
         registerHandler('reset', function ()
         {
-            //ABLAST.currentScore = {
-            //    name: '',
-            //    points: 0,
-            //    time: 0,
-            //    shoots: 0,
-            //    validShoot: 0
-            //};
 
             return initialState;
         });
@@ -75,29 +66,12 @@ AFRAME.registerSystem('gamestate', {
             return newState;
         });
 
-        registerHandler('xeno-death', function (newState)
+        registerHandler('score-point', function (newState)
         {
             newState.score++;
-            //ABLAST.currentScore.points++;
             if (newState.score >= self.data.scoreToWin)
             {
                 self.gameEnd(newState, true);
-            }
-
-            // All enemies killed, advance wave.
-            if (newState.numEnemies === 0)
-            {
-                newState.numSequences--;
-                newState.waveSequence++;
-                if (newState.numSequences === 0)
-                {
-                    newState.waveSequence = 0;
-                    newState.wave++;
-                    if (newState.wave >= WAVES.length)
-                    {
-                        self.gameEnd(newState, true);
-                    }
-                }
             }
 
             return newState;

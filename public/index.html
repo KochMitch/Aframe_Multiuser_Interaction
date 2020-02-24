@@ -126,7 +126,7 @@
         </a-plane>
 
         <a-entity id="mainmenu">
-            <a-button id="logo" json-model="src:url(assets/models/logo.json)" animate-message=""></a-button>
+            <a-button id="logo" json-model="src:url(assets/models/logo.json)"></a-button>
             <a-entity id="start_enemy"
                       enemy="name: enemy_start; canShoot: false"
                       collision-helper="radius: 0.65"
@@ -138,34 +138,5 @@
             </a-entity>
         </a-entity>
     </a-scene>
-    <script>
-        // Define custom schema for syncing xeno position.
-        //NAF.schemas.add({
-        //    template: '#avatar-template',
-        //    components: [
-        //        'position',
-        //        'rotation',
-        //        {
-        //            selector: '.avatar',
-        //            property: 'player'
-        //        }
-        //    ]
-        //});
-
-        //// Called by Networked-Aframe when connected to server
-        //function onConnect()
-        //{
-        //    console.log("onConnect", new Date());
-        //}
-
-        //// On mobile remove elements that are resource heavy
-        //var isMobile = AFRAME.utils.device.isMobile();
-
-        //if (isMobile)
-        //{
-        //    var particles = document.getElementById('particles');
-        //    particles.parentNode.removeChild(particles);
-        //}
-    </script>
 </body>
 </html>
