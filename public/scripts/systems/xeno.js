@@ -86,7 +86,7 @@ AFRAME.registerSystem('xeno', {
 
         setTimeout(function ()
         {
-            entity.setAttribute('xeno', '');
+            //entity.setAttribute('xeno', '');
             self.sceneEl.appendChild(entity);
         }, 1000);
     },

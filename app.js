@@ -89,20 +89,17 @@ io.on("connection", socket =>
     // Game events
     socket.on('ready', function (data)
     {
-        //console.log('Xeno killed');
-        io.sockets.emit('other_ready', data);
+        socket.broadcast.emit('other_ready', data);
     });
 
     socket.on('player_score', function (data)
     {
-        //console.log('Xeno killed');
-        io.sockets.emit('other_score');
+        socket.broadcast.emit('other_score');
     });
 
-    socket.on('game_start', function (data)
+    socket.on('player_won', function (data)
     {
-        //console.log('Xeno killed');
-        io.sockets.emit('xeno_change', { r: 0, g: 255, b: 0 });
+        socket.broadcast.emit('other_won', { r: 0, g: 255, b: 0 });
     });
 });
 
