@@ -9,13 +9,12 @@ AFRAME.registerComponent('selector', {
     init: function ()
     {
         let self = this;
-        let collisionHandler = function (event)
+        let selectionHandler = function (event)
         {
             self.el.sceneEl.emit(self.data.emitEvent);
-            //disableMenu();
-            //self.el.removeEventListener('collide', collisionHandler);
+            //self.el.removeEventListener('collide', selectionHandler);
         };
 
-        self.el.addEventListener("mouseenter", collisionHandler);
+        self.el.addEventListener("mouseenter", selectionHandler);
     },
 });

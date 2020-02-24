@@ -80,7 +80,7 @@ io.on("connection", socket =>
 
             if (occupants == {})
             {
-                console.log("everybody left room");
+                console.log("Everybody left room");
                 delete rooms[curRoom];
             }
         }
@@ -90,19 +90,19 @@ io.on("connection", socket =>
     socket.on('ready', function (data)
     {
         //console.log('Xeno killed');
-        socketIO.sockets.emit('player_ready', data);
+        io.sockets.emit('other_ready', data);
     });
 
-    socket.on('xeno_killed', function (data)
+    socket.on('player_score', function (data)
     {
         //console.log('Xeno killed');
-        socketIO.sockets.emit('xeno_change', { r: 0, g: 255, b: 0 });
+        io.sockets.emit('other_score');
     });
 
     socket.on('game_start', function (data)
     {
         //console.log('Xeno killed');
-        socketIO.sockets.emit('xeno_change', { r: 0, g: 255, b: 0 });
+        io.sockets.emit('xeno_change', { r: 0, g: 255, b: 0 });
     });
 });
 

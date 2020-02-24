@@ -20,11 +20,6 @@ AFRAME.registerSystem('xeno', {
         this.isSpawning = false;
         this.lastSpawn = 0;
 
-        //setTimeout(function()
-        //{
-        //    self.createXeno();
-        //}, 1000);
-
         sceneEl.addEventListener('gamestate-changed', function (evt)
         {
             if ('state' in evt.detail.diff)

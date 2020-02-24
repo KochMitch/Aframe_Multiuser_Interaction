@@ -111,10 +111,6 @@
                       interval="200"
                       objects=".clickable">
             </a-cursor>
-            <!--<a-entity id="cursor"
-                      cursor="rayOrigin: entity"
-                      raycaster="far:2; interval:200; objects: .clickable;">
-            </a-entity>-->
             <a-text id="score" value="Score: " position="-0.2 -0.5 -1" color="red" width="5" anchor="left"></a-text>
             <a-text id="waitText" value="Waiting for other player." position="0 0 -2" color="black" anchor="center" visible="false"></a-text>
             <a-entity position="0 0 -3">
@@ -143,8 +139,7 @@
                    width="0.25"
                    height="1.2"
                    depth="0.25"
-                   position="-1.5 0.6 -1"
-                   dynamic-body="shape: auto">
+                   position="-1.5 0.6 -1">
                 <a-text value="Coop" position="0 1 0" color="black" align="center"></a-text>
             </a-box>
 
@@ -155,12 +150,30 @@
                    width="0.25"
                    height="1.2"
                    depth="0.25"
-                   position="1.5 0.6 -1"
-                   dynamic-body="shape: auto">
+                   position="1.5 0.6 -1">
                 <a-text value="Competitive" position="0 1 0" color="black" align="center"></a-text>
             </a-box>
-
         </a-entity>
     </a-scene>
+    <!--<script>
+        NAF.schemas.add(
+        {
+            template: '#avatar-template',
+            components: [
+                'position',
+                'rotation',
+                'player',
+                {
+                    selector: '.hairs',
+                    component: 'show-child'
+                },
+                {
+                    selector: '.head',
+                    component: 'material',
+                    property: 'color'
+                },
+            ]
+        });
+    </script>-->
 </body>
 </html>

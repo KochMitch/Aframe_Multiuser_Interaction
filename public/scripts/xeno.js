@@ -15,14 +15,14 @@ AFRAME.registerComponent('xeno',
                 self.despawnSelf();
             }, ((Math.random() * 6) + 4) * 1000);
 
-            let collsionHandler = function (event)
+            this.collideHandler = function (event)
             {
                 const targetEl = event.detail.body.el;
 
                 if (targetEl.id == "playerWeap")
                 {
                     //self.isHit = true;
-                    self.el.removeEventListener("collide", collsionHandler);
+                    self.el.removeEventListener("collide", self.collideHandler);
                     if (self.despawnTimer)
                     {
                         clearTimeout(self.despawnTimer);
@@ -33,17 +33,17 @@ AFRAME.registerComponent('xeno',
                         self.despawnSelf();
                     }, 1200);
 
-                    self.el.sceneEl.emit();
+                    self.el.sceneEl.emit('score-point');
                 }
             };
 
-            self.el.addEventListener("collide", collsionHandler);
+            self.el.addEventListener("collide", self.collideHandler);
             self.el.components.sound.playSound();
         },
 
         remove: function ()
         {
-            this.el.removeEventListener("collide", this.collideHandle);
+            this.el.removeEventListener("collide", this.collideHandler);
 
             if (this.despawnTimer)
             {
