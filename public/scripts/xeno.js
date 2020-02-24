@@ -15,7 +15,7 @@ AFRAME.registerComponent('xeno',
                 self.despawnSelf();
             }, ((Math.random() * 6) + 4) * 1000);
 
-            const collsionHandler = function (event)
+            let collsionHandler = function (event)
             {
                 const targetEl = event.detail.body.el;
 

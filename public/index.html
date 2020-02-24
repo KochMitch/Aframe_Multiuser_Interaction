@@ -16,6 +16,7 @@
     <script src="scripts/systems/xeno.js"></script>
     <script src="scripts/xeno.js"></script>
     <script src="scripts/spawn-area.js"></script>
+    <script src="scripts/selector.js"></script>
     <script>
         _select = (sel) => document.querySelector(sel)
         _selectAll = (sel) => document.querySelectorAll(sel)
@@ -107,6 +108,7 @@
                   wasd-controls="acceleration: 100">
             <a-cursor></a-cursor>
             <a-text id="score" value="Score: " position="-0.2 -0.5 -1" color="red" width="5" anchor="left"></a-text>
+            <a-text id="waitText" value="Waiting for other player." position="0 0 -2" color="black" anchor="center" visible="false"></a-text>
             <a-entity position="0 0 -3">
                 <a-box id="playerWeap"
                        color='blue'
@@ -126,16 +128,26 @@
         </a-plane>
 
         <a-entity id="mainmenu">
-            <a-button id="logo" json-model="src:url(assets/models/logo.json)"></a-button>
-            <a-entity id="start_enemy"
-                      enemy="name: enemy_start; canShoot: false"
-                      collision-helper="radius: 0.65"
-                      json-model="src: url(assets/models/enemy0.json);
-                                  texturePath: url(assets/images/);
-                                  singleModel: true"
-                      position="0 1.2 -7"
-                      scale="1.3 1.3 1.3">
-            </a-entity>
+            <a-box id="coop"
+                   selector="emitEvent: coop"
+                   color="yellow"
+                   width="0.25"
+                   height="1.2"
+                   depth="0.25"
+                   position="-1.5 0.6 -1"
+                   static-body>
+                <a-text value="Coop" position="0 1 0" color="black" align="center"></a-text>
+            </a-box>
+            <a-box id="competitive"
+                   selector="emitEvent: competitive"
+                   color="red"
+                   width="0.25"
+                   height="1.2"
+                   depth="0.25"
+                   position="1.5 0.6 -1"
+                   static-body>
+                <a-text value="Competitive" position="0 1 0" color="black" align="center"></a-text>
+            </a-box>
         </a-entity>
     </a-scene>
 </body>

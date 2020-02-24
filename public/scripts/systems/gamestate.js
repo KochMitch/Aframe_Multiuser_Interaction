@@ -23,6 +23,7 @@ AFRAME.registerSystem('gamestate', {
         var initialState = this.initialState;
         const sceneEl = this.el;
         var state = this.data;
+        this.mainMenuGroup = document.getElementById('mainmenu');
 
         if (!initialState)
         {
@@ -56,7 +57,9 @@ AFRAME.registerSystem('gamestate', {
 
         registerHandler('reset', function ()
         {
-
+            this.mainMenuGroup.setAttribute('visible', true);
+            _select('#coop').addAttribute('static-body');
+            _select('#competative').addAttribute('static-body');
             return initialState;
         });
 
@@ -77,17 +80,7 @@ AFRAME.registerSystem('gamestate', {
             return newState;
         });
 
-        //registerHandler('xeno-spawn', function (newState)
-        //{
-        //    newState.numEnemies++;
-        //    return newState;
-        //});
-
-        //registerHandler('increment', function (newState, evt)
-        //{
-        //    newState.value++;
-        //    return newState;
-        //});
+        
 
         // Part of the game state library.
         function registerHandler(eventName, handler)
