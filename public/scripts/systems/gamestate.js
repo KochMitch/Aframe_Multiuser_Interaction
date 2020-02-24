@@ -15,8 +15,14 @@ AFRAME.registerSystem('gamestate', {
     // Function sets the game state to end.
     gameEnd: function (newState, win)
     {
+        let scene = this.sceneEl;
+        newState.isGameOver = true;
         newState.state = 'STATE_GAME_WIN';
-        newState.isGameWin = true;
+
+        setTimeout(function ()
+        {
+            scene.emit('reset');
+        }, 2000);
     },
 
     init: function ()
@@ -40,8 +46,9 @@ AFRAME.registerSystem('gamestate', {
         });
 
         sceneEl.emit('gamestateinitialized', { state: initialState });
-        _select('#score').setAttribute('text', 'value', 'Score: ' + state.score);
+        _select('#score').setAttribute('text', 'value', 'Score: ' + initialState.score);
 
+        // Handle selection of coop.
         registerHandler('coopSelect', function (newState)
         {
             newState.isCoop = true;
@@ -61,6 +68,7 @@ AFRAME.registerSystem('gamestate', {
             return newState;
         });
 
+        // Handle selection of competitive.
         registerHandler('competitiveSelect', function (newState)
         {
             newState.isCoop = false;
@@ -87,20 +95,6 @@ AFRAME.registerSystem('gamestate', {
             _select('#competitive').setAttribute('class', '');
             newState.isGameOver = false;
             newState.state = 'STATE_PLAYING';
-            return newState;
-        });
-
-        registerHandler('end-game', function (newState)
-        {
-            if (newState.state === 'STATE_PLAYING')
-            {
-                if (newState.health <= 0)
-                {
-                    newState.isGameOver = true;
-                    newState.state = 'STATE_MAIN_MENU';
-                }
-            }
-
             return newState;
         });
 
@@ -140,7 +134,7 @@ AFRAME.registerSystem('gamestate', {
                 self.gameEnd(newState, true);
             }
 
-            _select('#score').setAttribute('text', 'value', 'Score: ' + newState.score);
+            _select('#score').setAttribute('text', 'value', 'Score: ' + initialState.score);
 
             return newState;
         });
@@ -154,13 +148,23 @@ AFRAME.registerSystem('gamestate', {
             }
         });
 
+        // Receive a ready event from another player.
         socket.on('other_ready', function (data)
         {
-            self.otherReady = data.isReady && data.isCoop === state.isCoop;
-            if (self.ready && self.otherReady)
+            if (self.ready)
             {
-                _select('#waitText').setAttribute('visible', false);
-                sceneEl.emit('start-game');
+                self.otherReady = data.isReady && data.isCoop === state.isCoop;
+
+                if (self.otherReady)
+                {
+                    _select('#waitText').setAttribute('visible', false);
+                    sceneEl.emit('start-game');
+                }
+            }
+            else
+            {
+                self.otherReady = data.isReady;
+                state.isCoop = data.isCoop;
             }
         });
 
