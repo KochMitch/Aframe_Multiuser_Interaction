@@ -20,16 +20,10 @@ AFRAME.registerSystem('xeno', {
         this.xenos = [];
         this.isSpawning = true;
 
-        //this.loop = function ()
+        //setTimeout(function()
         //{
         //    self.createXeno();
-
-        //};
-
-        setTimeout(function()
-        {
-            self.createXeno();
-        }, 1000);
+        //}, 1000);
 
         sceneEl.addEventListener('gamestate-changed', function (evt)
         {
@@ -93,6 +87,7 @@ AFRAME.registerSystem('xeno', {
         entity.setAttribute('class', 'xeno');
         entity.setAttribute('networked', { template: "#xeno-template" });
         entity.setAttribute('spawn-area', { radius: 12, innerRadius: 2, inCircle: true });
+        //entity.setAttribute('sound', { src: '#squeak' });
 
         self.xenos.push(entity);
         self.sceneEl.emit('xeno-spawn', { xeno: entity });
@@ -103,6 +98,4 @@ AFRAME.registerSystem('xeno', {
             self.sceneEl.appendChild(entity);
         }, 1000);
     },
-
-
 });

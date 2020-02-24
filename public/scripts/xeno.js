@@ -9,32 +9,34 @@ AFRAME.registerComponent('xeno',
 
         init: function ()
         {
-            const context = this;
-            let lifeTime = ((Math.random() * 6) + 4) * 1000;
+            const self = this;
             this.despawnTimer = setTimeout(function ()
             {
-                context.despawnSelf();
+                self.despawnSelf();
             }, ((Math.random() * 6) + 4) * 1000);
 
-            context.el.addEventListener("collide", function (event)
+            const collsionHandler = function (event)
             {
                 const targetEl = event.detail.body.el;
 
                 if (targetEl.className == "weapon")
                 {
-                    //context.isHit = true;
-                    context.el.removeEventListener("collide", this);
-                    if (context.despawnTimer)
+                    //self.isHit = true;
+                    self.el.removeEventListener("collide", collsionHandler);
+                    if (self.despawnTimer)
                     {
-                        clearTimeout(context.despawnTimer);
+                        clearTimeout(self.despawnTimer);
                     }
 
-                    context.despawnTimer = setTimeout(function ()
+                    self.despawnTimer = setTimeout(function ()
                     {
-                        context.despawnSelf();
+                        self.despawnSelf();
                     }, 1200);
                 }
-            });
+            };
+
+            self.el.addEventListener("collide", collsionHandler);
+            self.el.components.sound.playSound();
         },
 
         remove: function ()
@@ -60,7 +62,7 @@ AFRAME.registerComponent('xeno',
             }
             else
             {
-                NAF.utils.takeOwnership(entityEl);
+                NAF.utils.takeOwnership(el);
             }
 
             el.sceneEl.removeChild(el);

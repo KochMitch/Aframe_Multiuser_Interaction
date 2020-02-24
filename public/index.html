@@ -31,22 +31,24 @@
 </head>
 <body>
     <a-scene physics="debug: true;"
-             networked-scene="app: Xeno_Basher; room: field; debug: true;">
+             networked-scene="app: Xeno_Basher; room: field; debug: false;">
         <a-assets>
-            <a-asset-item id="xeno" src="assets/models/xeno.glb"></a-asset-item>
+            <!--https://freesound.org/people/Reitanna/sounds/323725/-->
+            <audio id="thunk" src="assets/sounds/thunk.ogg" preload="auto"></audio>
+            <!--https://www.zapsplat.com/-->
+            <audio id="chirp" src="assets/sounds/chirp.ogg" preload="auto"></audio>
+            <audio id="squeak" src="assets/sounds/squeak.ogg" preload="auto"></audio>
 
-            <a-mixin id="xeno"
-                     class='xeno'
-                     networked="template: #xeno-template;"
-                     spawn-area="radius: 5">
-            </a-mixin>
+            <!--https://sketchfab.com/3d-models/imp-b05b7c537060408bafd23ed67aff47e8-->
+            <a-asset-item id="xeno" src="assets/models/xeno.glb"></a-asset-item>
 
             <template id="xeno-template">
                 <a-entity class="xeno"
+                          sound="src: #chirp;"
                           position="0 0.5 0"
                           scale="0.01 0.01 0.01"
                           gltf-model="#xeno"
-                          dynamic-body="shape: box;">
+                          dynamic-body="shape: auto;">
                 </a-entity>
             </template>
 
@@ -94,9 +96,6 @@
 
         <a-entity environment="preset: contact; seed: 50;"></a-entity>
 
-        <a-entity >
-        </a-entity>
-
         <!-- Camera -->
         <a-entity id="player"
                   networked="template: #avatar-template; attachTemplateToLocal: false;"
@@ -114,7 +113,8 @@
                        width='0.25'
                        height='0.25'
                        depth='2'
-                       static-body>
+                       static-body
+                       sound="src: #thunk; on: collide;">
                 </a-box>
             </a-entity>
         </a-entity>
