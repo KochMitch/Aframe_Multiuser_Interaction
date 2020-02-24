@@ -16,6 +16,6 @@ AFRAME.registerComponent('selector', {
             //self.el.removeEventListener('collide', collisionHandler);
         };
 
-        self.el.addEventListener("collide", collisionHandler);
+        self.el.addEventListener("mouseenter", collisionHandler);
     },
 });

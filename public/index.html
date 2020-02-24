@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.js"></script>
     <script src="https://unpkg.com/aframe-state-component@6.7.0/dist/aframe-state-component.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
-    <!--<script src="scripts/systems/gamestate.js"></script>-->
+    <script src="scripts/systems/gamestate.js"></script>
     <script src="scripts/systems/xeno.js"></script>
     <script src="scripts/xeno.js"></script>
     <script src="scripts/spawn-area.js"></script>
@@ -106,7 +106,15 @@
                   look-controls="pointerLockEnabled:true"
                   capture-mouse
                   wasd-controls="acceleration: 100">
-            <a-cursor></a-cursor>
+            <a-cursor id="cursor"
+                      far="2"
+                      interval="200"
+                      objects=".clickable">
+            </a-cursor>
+            <!--<a-entity id="cursor"
+                      cursor="rayOrigin: entity"
+                      raycaster="far:2; interval:200; objects: .clickable;">
+            </a-entity>-->
             <a-text id="score" value="Score: " position="-0.2 -0.5 -1" color="red" width="5" anchor="left"></a-text>
             <a-text id="waitText" value="Waiting for other player." position="0 0 -2" color="black" anchor="center" visible="false"></a-text>
             <a-entity position="0 0 -3">
@@ -129,25 +137,29 @@
 
         <a-entity id="mainmenu">
             <a-box id="coop"
-                   selector="emitEvent: coop"
+                   class="clickable"
+                   selector="emitEvent: coopSelect"
                    color="yellow"
                    width="0.25"
                    height="1.2"
                    depth="0.25"
                    position="-1.5 0.6 -1"
-                   static-body>
+                   dynamic-body="shape: auto">
                 <a-text value="Coop" position="0 1 0" color="black" align="center"></a-text>
             </a-box>
+
             <a-box id="competitive"
-                   selector="emitEvent: competitive"
+                   class="clickable"
+                   selector="emitEvent: competitiveSelect"
                    color="red"
                    width="0.25"
                    height="1.2"
                    depth="0.25"
                    position="1.5 0.6 -1"
-                   static-body>
+                   dynamic-body="shape: auto">
                 <a-text value="Competitive" position="0 1 0" color="black" align="center"></a-text>
             </a-box>
+
         </a-entity>
     </a-scene>
 </body>

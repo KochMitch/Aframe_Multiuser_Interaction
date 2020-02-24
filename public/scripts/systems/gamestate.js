@@ -9,7 +9,7 @@ AFRAME.registerSystem('gamestate', {
         isGameOver: { default: false },
         isCoop: { default: false },
         state: { default: 'STATE_MENU', oneOf: ['STATE_MENU', 'STATE_PLAYING', 'STATE_GAME_LOST', 'STATE_GAME_WIN'] },
-        scoreToWin: {default: 10 },
+        scoreToWin: {default: 5 },
     },
 
     gameEnd: function (newState, win)
@@ -21,7 +21,7 @@ AFRAME.registerSystem('gamestate', {
     init: function ()
     {
         var initialState = this.initialState;
-        const sceneEl = this.el;
+        const sceneEl = this.sceneEl;
         var state = this.data;
         this.mainMenuGroup = document.getElementById('mainmenu');
 
@@ -32,8 +32,25 @@ AFRAME.registerSystem('gamestate', {
 
         sceneEl.emit('gamestateinitialized', { state: initialState });
 
+        registerHandler('coopSelect', function (newState)
+        {
+            newState.isCoop = true;
+            newState.scoreToWin = 10;
+            return newState;
+        });
+
+        registerHandler('competitiveSelect', function (newState)
+        {
+            newState.isCoop = false;
+            newState.scoreToWin = 5;
+            return newState;
+        });
+
         registerHandler('start-game', function (newState)
         {
+            this.mainMenuGroup.setAttribute('visible', false);
+            _select('#coop').setAttribute('class', '');
+            _select('#competative').setAttribute('class', '');
             newState.isGameOver = false;
             //newState.isGameWin = false;
             newState.state = 'STATE_PLAYING';
@@ -47,7 +64,6 @@ AFRAME.registerSystem('gamestate', {
                 if (newState.health <= 0)
                 {
                     newState.isGameOver = true;
-                    newState.numEnemies = 0;
                     newState.state = 'STATE_GAME_OVER';
                 }
             }
@@ -58,15 +74,9 @@ AFRAME.registerSystem('gamestate', {
         registerHandler('reset', function ()
         {
             this.mainMenuGroup.setAttribute('visible', true);
-            _select('#coop').addAttribute('static-body');
-            _select('#competative').addAttribute('static-body');
+            _select('#coop').setAttribute('class', 'clickable');
+            _select('#competative').setAttribute('class', 'clickable');
             return initialState;
-        });
-
-        registerHandler('xeno-spawn', function (newState)
-        {
-            newState.numEnemies++;
-            return newState;
         });
 
         registerHandler('score-point', function (newState)
@@ -80,12 +90,10 @@ AFRAME.registerSystem('gamestate', {
             return newState;
         });
 
-        
-
         // Part of the game state library.
         function registerHandler(eventName, handler)
         {
-            el.addEventListener(eventName, function (param)
+            sceneEl.addEventListener(eventName, function (param)
             {
                 let newState = handler(AFRAME.utils.extend({}, state), param);
                 publishState(eventName, newState);
@@ -96,9 +104,9 @@ AFRAME.registerSystem('gamestate', {
         function publishState(event, newState)
         {
             let oldState = AFRAME.utils.extend({}, state);
-            el.setAttribute('gamestate', newState);
+            sceneEl.setAttribute('gamestate', newState);
             state = newState;
-            el.emit('gamestate-changed', {
+            sceneEl.emit('gamestate-changed', {
                 event: event,
                 diff: AFRAME.utils.diff(oldState, newState),
                 state: newState

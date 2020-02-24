@@ -1,5 +1,4 @@
 'use strict';
-//GAME.xenos = {};
 
 AFRAME.registerSystem('xeno', {
     schema: {
@@ -18,7 +17,8 @@ AFRAME.registerSystem('xeno', {
         }
 
         this.xenos = [];
-        this.isSpawning = true;
+        this.isSpawning = false;
+        this.lastSpawn = 0;
 
         //setTimeout(function()
         //{
@@ -31,10 +31,7 @@ AFRAME.registerSystem('xeno', {
             {
                 if (evt.detail.state.state === 'STATE_PLAYING')
                 {
-                    setTimeout(function ()
-                    {
-                        self.createXeno();
-                    }, 1000);
+                    self.isSpawning = true;
                 }
                 else if (evt.detail.state.state === 'STATE_GAME_OVER'
                     || evt.detail.state.state === 'STATE_GAME_WIN'
@@ -57,13 +54,14 @@ AFRAME.registerSystem('xeno', {
         this.isSpawning = false;
     },
 
-    tick: function ()
+    tick: function (time, delta)
     {
         let self = this;
-        if (self.isSpawning)
+        if (self.isSpawning && time - self.lastSpawn >= 1000)
         {
             if (self.xenos.length < self.data.maxXenos)
             {
+                self.lastSpawn = time;
                 self.createXeno();
             }
         }
@@ -96,5 +94,12 @@ AFRAME.registerSystem('xeno', {
             entity.setAttribute('xeno', '');
             self.sceneEl.appendChild(entity);
         }, 1000);
+    },
+
+    reset: function ()
+    {
+        let self = this;
+        self.xenos = [];
+        self.isSpawning = false;
     },
 });

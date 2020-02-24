@@ -29,8 +29,8 @@ AFRAME.registerComponent('spawn-area', {
         el.setAttribute('position', worldPoint);
 
         let angleDeg = angleRad * 180 / Math.PI;
-        let angleToCenter = -1 * angleDeg + 90;
-        let rotationStr = '0 ' + angleToCenter + ' 0';
+        //let angleToCenter = -1 * angleDeg + 90;
+        let rotationStr = '0 ' + angleDeg + ' 0';
         el.setAttribute('rotation', rotationStr);
     },
 
