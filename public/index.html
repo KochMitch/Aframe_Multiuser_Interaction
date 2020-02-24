@@ -30,12 +30,14 @@
 </head>
 <body>
     <a-scene physics="debug: true;"
-             networked-scene="app: competitive; room: field; debug: true;">
+             networked-scene="app: Xeno_Basher; room: field; debug: true;">
         <a-assets>
             <a-asset-item id="xeno" src="assets/models/xeno.glb"></a-asset-item>
 
-            <a-mixin>
-
+            <a-mixin id="xeno"
+                     class='xeno'
+                     networked="template: #xeno-template;"
+                     spawn-area="radius: 5">
             </a-mixin>
 
             <template id="xeno-template">
@@ -44,8 +46,10 @@
                           position="0 0.5 0"
                           scale="0.01 0.01 0.01"
                           gltf-model="#xeno"
-                          dynamic-body="shape: auto;"> </a-entity>
+                          dynamic-body="shape: auto;">
+                </a-entity>
             </template>
+
             <template id="avatar-template">
                 <a-entity class="avatar">
                     <a-sphere class="head"
@@ -61,7 +65,8 @@
                             <a-sphere class="pupil"
                                       color="#000"
                                       position="0 0 -1"
-                                      scale="0.2 0.2 0.2"></a-sphere>
+                                      scale="0.2 0.2 0.2">
+                            </a-sphere>
                         </a-sphere>
                         <a-sphere class="eye"
                                   color="#efefef"
@@ -70,7 +75,8 @@
                             <a-sphere class="pupil"
                                       color="#000"
                                       position="0 0 -1"
-                                      scale="0.2 0.2 0.2"></a-sphere>
+                                      scale="0.2 0.2 0.2">
+                            </a-sphere>
                         </a-sphere>
                     </a-entity>
                     <a-entity position="0 0 -3">
@@ -84,24 +90,11 @@
                     </a-entity>
                 </a-entity>
             </template>
-
-            <!--<template id="weapon-template">
-                <a-entity position="0 0 -3">
-                    <a-box class="weapon"
-                           color='blue'
-                           width='0.25'
-                           height='0.25'
-                           depth='3'
-                           static-body>
-                    </a-box>
-                </a-entity>
-            </template>-->
         </a-assets>
+
         <a-entity environment="preset: contact; seed: 50;"></a-entity>
 
-        <a-entity class='xeno'
-                  networked="template: #xeno-template;"
-                  spawn-area="radius: 5">
+        <a-entity >
         </a-entity>
 
         <!-- Camera -->
@@ -114,7 +107,7 @@
                   capture-mouse
                   wasd-controls="acceleration: 100">
             <a-cursor></a-cursor>
-            <a-text id="score" value="Score" position="-0.2 -0.5 -1" color="red" width="5" anchor="left"></a-text>
+            <a-text id="score" value="Score: " position="-0.2 -0.5 -1" color="red" width="5" anchor="left"></a-text>
             <a-entity position="0 0 -3">
                 <a-box class="weapon"
                        color='blue'
@@ -131,21 +124,34 @@
                  width="100" height="100"
                  visible="false">
         </a-plane>
+
+        <a-entity id="mainmenu">
+            <a-entity id="logo" json-model="src:url(assets/models/logo.json)" animate-message=""></a-entity>
+            <a-entity id="start_enemy"
+                      enemy="name: enemy_start; canShoot: false"
+                      collision-helper="radius: 0.65"
+                      json-model="src: url(assets/models/enemy0.json);
+                                  texturePath: url(assets/images/);
+                                  singleModel: true"
+                      position="0 1.2 -7"
+                      scale="1.3 1.3 1.3">
+            </a-entity>
+        </a-entity>
     </a-scene>
     <script>
         // Define custom schema for syncing xeno position.
-        NAF.schemas.add({
-            template: '#xeno-template',
-            components: [
-                'position',
-                'rotation',
-                {
-                    selector: '.head',
-                    component: 'material',
-                    property: 'body'
-                }
-            ]
-        });
+        //NAF.schemas.add({
+        //    template: '#xeno-template',
+        //    components: [
+        //        'position',
+        //        'rotation',
+        //        {
+        //            selector: '.head',
+        //            component: 'material',
+        //            property: 'body'
+        //        }
+        //    ]
+        //});
 
         //// Called by Networked-Aframe when connected to server
         //function onConnect()

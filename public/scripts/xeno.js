@@ -13,7 +13,7 @@ AFRAME.registerComponent('xeno',
             this.despawnTimer = setTimeout(function ()
             {
                 context.despawnSelf();
-            }, (Math.random() * 4) + 5 * 1000);
+            }, (Math.random() * 4) + 10 * 1000);
 
             context.el.addEventListener("collide", function (event)
             {
@@ -49,6 +49,15 @@ AFRAME.registerComponent('xeno',
         despawnSelf: function ()
         {
             const context = this;
-            context.el.parentNode.removeChild(context.el);
+            const el = context.el;
+
+            // Check who owns the element and take ownership if it belongs to a different client,
+            // as only the element owner can remove it.
+            if (!NAF.utils.isMine(el))
+            {
+                NAF.utils.takeOwnership(entityEl);
+            }
+
+            el.sceneEl.removeChild(el);
         },
     })

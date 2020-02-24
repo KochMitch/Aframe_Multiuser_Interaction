@@ -87,6 +87,12 @@ io.on("connection", socket =>
     });
 
     // Game events
+    socket.on('ready', function (data)
+    {
+        //console.log('Xeno killed');
+        socketIO.sockets.emit('player_ready', data);
+    });
+
     socket.on('xeno_killed', function (data)
     {
         //console.log('Xeno killed');
